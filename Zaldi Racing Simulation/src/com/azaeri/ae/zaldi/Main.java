@@ -16,10 +16,12 @@ class Main {
     do {
         horses = kard.nextInt();
     } while (horses < 5 || horses > 14);
+  
     int[] move = new int[horses];
     double[] betHorse = new double[horses];
    
-    System.out.println("How many People will be Betting?" );
+    System.out.println("\nHow many People will be Betting?" );
+    
     int number = kard.nextInt(); 
     for (int i = 1; i <= number; i++) {
         System.out.println("\nPlace Your Bets!" + "\n----------------");
@@ -33,19 +35,21 @@ class Main {
         for (int p = 1; p <= horses; p++) {
             if (bet == p) {
                 System.out.println("Enter the amount of your bet:");
-                betHorse[bet - 1] += kard.nextDouble();
+                betHorse[bet - 1] += kard.nextFloat();
+                if(betHorse[bet - 1] < 1){
+                  System.out.println("\nBets must be greater than $1.00\n" + "Please Enter Your Wager:");
+                  betHorse[bet - 1] = kard.nextFloat(); 
+                }
             }
         }
          System.out.println();
         for (int j = 1; j <= horses; j++) {
-            System.out.println("Bet for Horse #" + j + ": $ " + betHorse[j - 1]);
+          System.out.println("Bet for Horse #" + j + ": $" + String.format("%.2f" , betHorse[j-1]));
         }
-    } 
+    }
     kard.close();
 
     System.out.println("\nAll Bets Have Been Settled.." + "\nRace begins in:");
-    
-    
     int strtPstl = 5;
     for (int i = 1; i <= strtPstl; strtPstl--) {
         System.out.println(strtPstl);
@@ -53,49 +57,34 @@ class Main {
     }
     do {
         Thread.sleep(1000);
-        
-        int racenum = 1;
-        int[] numbers = new int[horses];
-        for (int i = 0; i < horses; i++) {
-          numbers[i] = 1 + (int) (Math.random() * 6);
-        }
-        for (int i = 0; i < horses; i++) {
-            if (numbers[i] >= 1 && numbers[i] <= 3) {
-                move[i]++;
-            } else if (numbers[i] == 4 && numbers[i] == 5) {
-                move[i] = move[i] + 3;
-            } else if (numbers[i] == 6) {
-                move[i] = move[i] + 5;
-            } 
-        } racenum = racenum+=1;
 
-        System.out.println("\n" + "Race #" + racenum);
-        for (int i = 1; i <= horses; i++){   
-           System.out.println("Horse " + i +" position:" + move[i-1]);
+        for (int i = 0; i < horses; i++) {
+            int die = 1 + (int)(Math.random()*6);
+            if (die >= 1 && die <= 3) {
+               move[i]++;
+            } else if (die == 4 || die == 5) {
+               move[i] = move[i] + 3;
+            } else { 
+               move[i] = move[i] + 5;
+            }
+        }  
+         int racenum = 1606;
+        for (int i = 0; i < racenum; i++){
+            i = racenum++;
+        }
+         System.out.println("\n" + "Race #" + racenum);
+         for (int i = 1; i <= horses; i++) {   
+           System.out.println("Horse " + i +" position:" + move[i-1]); 
         } 
 
-        /*  visual display of horses current track 
-            position for possible use in JPanel/Swing 
-        */
-        // for (int i = 1; i <= horses; i++) {
-
-
-          
-        //     for (int j = 0; j < move[i - 1]; j++) {
-        //         System.out.print("--");
-        //     }
-        //     System.out.println(i + "H" + move[i - 1]);
-
-        // }
-
-          System.out.println("\n\n");
+      System.out.println("\n\n");
     } while (move[horses - 1] < tracks.length );
       System.out.println("----------------------" + "\n\tWinners Circle" + "\n----------------------");
-    for (int i = 1; i <= horses; i++) {
+      for (int i = 1; i <= horses; i++) {
         if (move[i - 1] > tracks.length) {
-            System.out.println("HORSE " + i + " finished the track! One who bets for HORSE " + i + " won P" + betHorse[i - 1] * 2);
+            System.out.println("Horse #" + i + " finished Place " + move[i-1] + " | Bet Payout $" + String.format("%.2f", betHorse[i - 1] * 2)); 
         }
-    }
+     }
 
   }
 }
